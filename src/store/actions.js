@@ -1,10 +1,13 @@
 export const actions = {
   async login({ commit }, user) {
     commit("showLoading", true);
-    setTimeout(() => {
-      commit("setUser", user.username);
-      commit("showLoading", false);
-    }, 2000);
+    return new Promise((resolve, reject) => { // Return a Promise
+      setTimeout(() => {
+        commit("setUser", user.username);
+        commit("showLoading", false);
+        resolve(); // Resolve the Promise upon successful login
+      }, 2000);
+    });
   },
   async checkuser() {
     alert("adajh");

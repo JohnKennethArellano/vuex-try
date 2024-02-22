@@ -41,11 +41,12 @@ const formdata = reactive({
   username: '',
   password: '',
 })
-
+const numberCheck = (value) => /\d/.test(value);
 const rules = computed(() => {
   return {
     username: {
       required: helpers.withMessage('Username required', required),
+      numberCheck: helpers.withMessage("Username must have a number", numberCheck)
     },
     password: {
       required: helpers.withMessage('Password required', required),
