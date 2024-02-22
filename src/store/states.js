@@ -1,0 +1,10 @@
+import { reactive } from "vue";
+
+export const state = reactive({
+  data: {
+    username: "",
+  },
+  loading: {
+    showLoading: false,
+  },
+});
