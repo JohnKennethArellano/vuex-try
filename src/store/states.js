@@ -7,4 +7,7 @@ export const state = reactive({
   loading: {
     showLoading: false,
   },
+  sidebar: {
+    collapsed: false,
+  },
 });

@@ -46,7 +46,6 @@ const rules = computed(() => {
   return {
     username: {
       required: helpers.withMessage('Username required', required),
-      numberCheck: helpers.withMessage("Username must have a number", numberCheck)
     },
     password: {
       required: helpers.withMessage('Password required', required),
@@ -67,9 +66,10 @@ const registerUser = async (e) => {
   // const colRef = collection(db, 'user')
   // const docRef = await addDoc(colRef, formdata)
   // console.log(docRef)
-  store.dispatch("login", formdata)
+  await store.dispatch("login", formdata)
     .then(
       router.push({ name: 'about' })
     )
 }
+
 </script>

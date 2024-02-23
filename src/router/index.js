@@ -10,10 +10,20 @@ const routes = [
     name: "about",
     component: () => import("../views/AboutView.vue"),
   },
+  {
+    path: "/features",
+    name: "features",
+    component: () => import("../views/AboutView.vue"),
+  },
+  {
+    path: "/contact",
+    name: "contact",
+    component: () => import("../views/AboutView.vue"),
+  },
 ];
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes
+  routes,
 });
 
 export default router;
