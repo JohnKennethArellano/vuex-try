@@ -1,7 +1,9 @@
 <template>
-  <Loader v-if="loading"></Loader>
-  <div>
+  <div class="shadow-lg p-8 rounded-md">
     <form @submit.prevent="submitForm" class="flex flex-col h-auto w-auto">
+      <span class="w-full flex justify-center">
+        <h1 class="font-bold text-3xl text-gray-700">Login</h1>
+      </span>
       <div class="flex flex-col w-auto h-auto mb-2">
         <label for="email" class="w-full h-auto">Email</label>
         <input type="text" v-model="formdata.email"
@@ -18,8 +20,13 @@
           error.$message }}
         </p>
       </div>
-      <button type="submit">Submit</button>
-      <router-link to="/register">register</router-link>
+      <button type="submit" class="border rounded-lg relative h-[3vw] flex items-center justify-center">
+        <Loader v-if="loading"></Loader>
+        <span v-else>Log in</span>
+      </button>
+      <span class="w-full flex justify-center mt-3 text-sm">
+        <router-link to="/register">Register here</router-link>
+      </span>
     </form>
   </div>
 </template>
@@ -31,11 +38,11 @@ import { useStore } from 'vuex'
 import useVuelidate from '@vuelidate/core'
 import { required, helpers } from '@vuelidate/validators'
 import { useRouter } from 'vue-router';
-
+import Swal from 'sweetalert2'
 import db from '../firebase/init'
 import { collection, addDoc } from 'firebase/firestore'
 
-const Loader = defineAsyncComponent(() => import('../components/Loader.vue'))
+const Loader = defineAsyncComponent(() => import('../components/LoadingButton.vue'))
 
 const router = useRouter()
 const store = useStore()
@@ -65,15 +72,32 @@ const submitForm = async (ev) => {
 }
 
 function registerUser(ev) {
-  ev.preventDefault
-  // const colRef = collection(db, 'user')
-  // const docRef = await addDoc(colRef, formdata)
-  // console.log(docRef)
+  ev.preventDefault()
   store.dispatch("login", formdata)
-    .then(() => {
-      router.push({
-        path: '/about',
-      })
+    .then((data) => {
+      console.log(data)
+      if (data.message == "wrong credentials") {
+        console.log(data.message)
+        Swal.fire({
+          text: data.message,
+          icon: 'error',
+          timer: 1000,
+          showConfirmButton: false,
+        }).then(() => {
+          formdata.email = '',
+            formdata.password = '',
+            $v.value.$reset()
+        })
+      }
+      else {
+        router.push({
+          path: '/about',
+        })
+      }
+
+    })
+    .catch((error) => {
+      console.log(error)
     })
 }
 

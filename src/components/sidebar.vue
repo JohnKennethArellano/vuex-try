@@ -20,7 +20,7 @@
                 </div>
             </li>
             <div class="w-full absolute bottom-0 flex justify-center">
-                <icon icon="power-off" />
+                <icon icon="power-off" @click="logout" />
             </div>
         </ul>
     </nav>
@@ -30,8 +30,9 @@
 <script setup>
 import { useStore } from 'vuex';
 import { computed, ref, } from 'vue';
-
+import { useRouter } from 'vue-router';
 const store = useStore();
+const router = useRouter()
 const userLogin = computed(() => store.getters.getUser);
 const sidebarState = computed(() => store.getters.getSidebarState);
 const isCollapsed = ref(false)

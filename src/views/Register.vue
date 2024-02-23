@@ -1,6 +1,9 @@
 <template>
-  <div>
+  <div class="shadow-lg p-8 rounded-md">
     <form @submit.prevent="submitForm" class="flex flex-col h-auto w-auto">
+      <span class="w-full flex justify-center">
+        <h1 class="font-bold text-3xl text-gray-700">Register</h1>
+      </span>
       <div class="flex flex-col w-auto h-auto mb-2">
         <label for="name" class="w-full h-auto">Name</label>
         <input type="text" v-model="formdata.name"
@@ -34,10 +37,13 @@
             error.$message }}
         </p>
       </div>
-      <button type="submit" class="border rounded-lg relative h-[4vw] flex items-center justify-center">
+      <button type="submit" class="border rounded-lg relative h-[3vw] flex items-center justify-center">
         <Loader v-if="loading"></Loader>
         <span v-else>Register</span>
       </button>
+      <span class="w-full flex justify-center mt-3 text-sm">
+        <router-link to="/">Login here</router-link>
+      </span>
     </form>
   </div>
 </template>

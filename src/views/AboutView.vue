@@ -1,5 +1,4 @@
 <template>
-
   <div class="container">
     <Loader v-if="loading"></Loader>
     <div class="sidebar">
@@ -22,8 +21,9 @@ const userLogin = computed(() => store.getters.getUser);
 const Loader = defineAsyncComponent(() => import('@/components/Loader.vue'))
 const loading = computed(() => store.state.loading.showLoading)
 
-// onMounted(() => {
-//   !userLogin.value ? router.push({ name: 'home' }) : router.push({ name: 'about' });
-// });
+onMounted(() => {
+  !userLogin.value ? router.push({ name: 'home' }) : router.push({ name: 'about' });
+  console.log(userLogin)
+});
 
 </script>
