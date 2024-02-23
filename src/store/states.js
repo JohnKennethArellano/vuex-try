@@ -10,4 +10,7 @@ export const state = reactive({
   sidebar: {
     collapsed: false,
   },
+  user : {
+    data : []
+  }
 });

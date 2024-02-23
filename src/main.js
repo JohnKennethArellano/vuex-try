@@ -6,10 +6,10 @@ import router from "./router";
 import { store } from "./store/store";
 import "./AxiosClient";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { fas } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
-library.use(fas);
+import { fas } from "@fortawesome/free-solid-svg-icons";
 
+library.add(fas);
 const app = createApp(App);
 
 app.use(router);

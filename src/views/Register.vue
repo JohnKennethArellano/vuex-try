@@ -1,7 +1,14 @@
 <template>
-  <Loader v-if="loading"></Loader>
   <div>
     <form @submit.prevent="submitForm" class="flex flex-col h-auto w-auto">
+      <div class="flex flex-col w-auto h-auto mb-2">
+        <label for="name" class="w-full h-auto">Name</label>
+        <input type="text" v-model="formdata.name"
+          class="w-[20vw] py-2 px-4 outline-none focus:ring rounded text-md border border-gray-400">
+        <p v-for="error in $v.name.$errors" :key="error.$uid" class="text-red-500 text-xs w-full ">{{
+          error.$message }}
+        </p>
+      </div>
       <div class="flex flex-col w-auto h-auto mb-2">
         <label for="email" class="w-full h-auto">Email</label>
         <input type="text" v-model="formdata.email"
@@ -18,8 +25,19 @@
           error.$message }}
         </p>
       </div>
-      <button type="submit">Submit</button>
-      <router-link to="/register">register</router-link>
+      <div class="flex flex-col w-auto h-auto mb-2">
+        <label for="password_confirmation" class="w-full h-auto">Confirm your password</label>
+        <input type="text" v-model="formdata.password_confirmation"
+          class="w-[20vw] py-2 px-4 outline-none focus:ring rounded text-md border border-gray-400">
+        <p v-for="error in $v.password_confirmation.$errors" :key="error.$uid" class="text-red-500 text-xs w-full ">
+          {{
+            error.$message }}
+        </p>
+      </div>
+      <button type="submit" class="border rounded-lg relative h-[4vw] flex items-center justify-center">
+        <Loader v-if="loading"></Loader>
+        <span v-else>Register</span>
+      </button>
     </form>
   </div>
 </template>
@@ -29,33 +47,40 @@
 import { reactive, computed, defineAsyncComponent } from 'vue';
 import { useStore } from 'vuex'
 import useVuelidate from '@vuelidate/core'
-import { required, helpers } from '@vuelidate/validators'
+import { required, helpers, sameAs } from '@vuelidate/validators'
 import { useRouter } from 'vue-router';
 
-import db from '../firebase/init'
-import { collection, addDoc } from 'firebase/firestore'
-
-const Loader = defineAsyncComponent(() => import('../components/Loader.vue'))
+const Loader = defineAsyncComponent(() => import('../components/LoadingButton.vue'))
 
 const router = useRouter()
 const store = useStore()
 const formdata = reactive({
+  name: '',
   email: '',
   password: '',
+  password_confirmation: '',
 })
-const numberCheck = (value) => /\d/.test(value);
 const loading = computed(() => store.state.loading.showLoading)
+
 const rules = computed(() => {
   return {
+    name: {
+      required: helpers.withMessage('Name required', required),
+    },
     email: {
-      required: helpers.withMessage('email required', required),
+      required: helpers.withMessage('Email required', required),
     },
     password: {
       required: helpers.withMessage('Password required', required),
     },
+    password_confirmation: {
+      required: helpers.withMessage('Confirm your password', required),
+      sameAs: helpers.withMessage("Password not mathced", sameAs(formdata.password))
+    },
   }
 })
 const $v = useVuelidate(rules, formdata)
+
 const submitForm = async (ev) => {
   ev.preventDefault();
   const result = await $v.value.$validate();
@@ -64,17 +89,13 @@ const submitForm = async (ev) => {
   }
 }
 
-function registerUser(ev) {
-  ev.preventDefault
-  // const colRef = collection(db, 'user')
-  // const docRef = await addDoc(colRef, formdata)
-  // console.log(docRef)
-  store.dispatch("login", formdata)
+function registerUser(e) {
+  e.preventDefault()
+  store.dispatch("register", formdata)
     .then(() => {
       router.push({
-        path: '/about',
+        path: '/',
       })
     })
 }
-
 </script>

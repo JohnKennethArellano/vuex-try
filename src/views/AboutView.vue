@@ -1,6 +1,7 @@
 <template>
-  <Loader v-if="loading"></Loader>
+
   <div class="container">
+    <Loader v-if="loading"></Loader>
     <div class="sidebar">
       <sidebar />
     </div>
